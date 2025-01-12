@@ -108,12 +108,10 @@ class SendCodeAgainView(NoLoginRequireMixin ,View):
     def post(self, request):
         email = request.session['user_register_info']['email']
         otp_obj = OtpCode.objects.get(email=email)
-    
-        code_time = otp_obj.code_time
-        now_time = timezone.now()
 
-        if now_time <= code_time:
-            messages.add_message(request, messages.SUCCESS, f"wait for {(code_time - now_time).seconds} seconds to send code again! ")
+
+        if not otp_obj.is_expire():
+            messages.add_message(request, messages.SUCCESS, f"wait for {otp_obj.expire_time.seconds} seconds to send code again! ")
         else:
             another_random_code = randint(1, 9999)
             send_code(email, another_random_code)

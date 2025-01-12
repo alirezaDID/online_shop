@@ -66,3 +66,11 @@ class OtpCode(models.Model):
     code = models.SmallIntegerField()
     created_on = models.DateTimeField(auto_now_add=True)
     code_time = models.DateTimeField(default=(timezone.now() + timedelta(minutes=2)))
+
+
+    def is_expire(self):
+          return True if timezone.now() >= self.code_time else False 
+    
+    @property
+    def expire_time(self):
+          return self.code_time - timezone.now()

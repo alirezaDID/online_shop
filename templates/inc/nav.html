@@ -1,0 +1,18 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <div class="navbar-nav">
+            <a  class="nav-link active" href="{% url 'Home:home' %}">Home</a>
+            {% if not user.is_authenticated %}
+            <a  class="nav-link active" href="{% url 'Account:register' %}">Register</a>
+            <a  class="nav-link active" href="{% url 'Account:login' %}">Login</a>
+            {% else %}
+            <a  class="nav-link active" href="{% url 'Account:logout' %}">Logout</a>
+            
+            {% endif %}
+            <a  class="nav-link active" href="{% url 'Order:order_list' %}">basket  {{ basket|length }} </a>
+            {% if is_check_out %}
+                <a  class="nav-link active" href="{% url 'Order:order_detail' check_out_order %}">check out</a>
+            {% endif %}
+        </div> 
+    </div>
+</nav>

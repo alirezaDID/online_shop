@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% if basket %}
+<table class="table table-striped table-dark">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Price</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Total</th>
+      <th scope="col">Remove</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {% for order in basket %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ order.product.title }}</td>
+      <td>{{ order.product.price }}</td>
+      <td>{{ order.quantity }}</td>
+      <td>{{ order.total_price }}</td>
+
+      <td><a href="{% url 'Order:remove_order' order.product.product_id %}" style="outline: none; color: #f00;"><button style=' width: 4.5rem;' class="button btn-danger">remove</button></a></td>
+    </tr>
+    {% endfor %}
+    <tr style="border: 2px solid black;">
+      {% with basket_count=basket|length %}
+      <th>{{ basket_count|add:'1' }}</th>
+      {% endwith %}
+      <td colspan="4">Total Price</td>
+      <td  style="text-align: center;">{{ total_price }}</td>
+    </tr>
+    <tr style="border: 2px solid black;">
+      <td colspan='6' style='text-align: center;'>
+        <a href="{% url "Order:check_out" %}" style="outline: none; color: #f00;"><button style=' width:7rem; height: 3rem;' class="button btn-primary">check out</button></a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+{% else %}
+
+  <h3>basket is empty!</h3>
+
+{% endif %}
+    
+{% endblock  %}

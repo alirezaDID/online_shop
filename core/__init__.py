@@ -1,0 +1,1 @@
+from core.celery_conf import app

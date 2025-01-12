@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+        {% with order_items=order.order_items.all %}
+            {% for item in order_items %}
+                <p style='display: block;'>
+                    <span class="btn btn-danger">{{ item.quantity }}</span> 
+                    <span class="btn btn-warning">{{ item.product }}</span> 
+                    <span class="btn btn-primary">{{ item.get_cost }}</span>
+                    <span class="badge badge-primary">cost</span>
+                </p>
+            {% endfor %}
+
+        {% endwith %}
+        <span class="btn btn-primary">total price :</span>
+        <span class="btn btn-danger">{{ order.get_total_cost }}</span><br>
+        <form action="{% url 'Order:apply_coupon' order.id %}" method="post" style="margin-top: 2rem;">
+            {% csrf_token %}
+            <input type="text" name="code" id="">
+            <input type="submit" value="apply coupon" class="button btn-primary">
+        </form>
+        <a href="{% url 'Order:order_pay' order.id %}" style="margin: 2rem; display: block;"><button type="button" class="btn btn-dark">buy basket</button></a>
+
+    {% endblock  %}

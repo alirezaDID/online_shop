@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if form %}
+    <form action="" method='post'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="send">
+    </form>
+    <form action="{% url 'Account:send_code_again' %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="send code again!">
+    </form>
+    {% else %}
+    {% if context_error %}
+       <a href='{% url "Home:home" %}'><p class='alert alert-alert'>{{ context_error }}</p></a>
+       {% endif %}
+
+    {% if context_success %}
+       <a href='{% url "Home:home" %}'><p class='alert alert-success'>{{ context_success }}</p></a>
+    {% endif %}
+
+    {% endif %}
+
+
+{% endblock  %}

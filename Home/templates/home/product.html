@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_header %}
+    <link rel="stylesheet" href="{% static "product.css" %}">
+{% endblock %}
+{% block content %}
+<div class="bg-light p-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-4">
+          <div class="product-card bg-white rounded-4 shadow-sm h-100 position-relative">
+            <div class="overflow-hidden">
+              <img src="{{ product.image.url }}" class="product-image w-100" alt="Product">
+            </div>
+            <div class="p-4">
+              <h5 class="fw-bold mb-3">{{ product.title }}</h5>
+              <div class="d-flex align-items-center mb-3">
+                <div class="me-2">
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star-half-alt text-warning"></i>
+                </div>
+                <small class="text-muted">(4.5/5)</small>
+              </div>
+              <p class="text-muted mb-4" style="display: block;">{{ product.description }}</p>
+              {% if product.quantity %}
+              <span style="display: block;"><span class="price">{{ product.quantity }}</span> number in warehouse</span>
+              <span class="price">{{ product.price }}T</span>
+              <div class="d-flex justify-content-between align-items-center">
+                <form action="{% url 'Order:add_order' product.id %}" method="post" style="display: flex; justify-content: center; align-items: center; gap: 0.5rem;">
+                  {% csrf_token %}
+                  <input  type="number" name="quantity"  style="width: 40%;" max="{{ product.quantity }}" min="1" value="{{ session_quanity_value }}">
+                  <button class="btn btn-custom text-white px-4 py-2 rounded-pill" style="width: 80%;">
+                    Add to Cart
+                  </button>
+                </form>
+                {% else %}
+                Unavailable Product
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock  %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_header %}
+<link href="https://fonts.googleapis.com/css?family=Arvo&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'menue.css' %}">
+{% endblock extra_header %}
+
+{% block content %}
+<nav role="navigation" class="primary-navigation">
+    <ul>
+    {% for category in  categories %}
+
+            <li>
+                <a href="{{ category.get_absolute_url }}">{{ category.name }}</a>
+                {% with cats=category.childs.all %}
+                    {% if cats %}
+                    <ul class="dropdown">
+                        {% for cat in cats %}
+                        <li><a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                {% endwith %}
+            </li>
+
+            {% endfor %}
+        </ul>
+    </nav>
+
+    <div style='display: flex; gap: 1rem; width: 100%; max-width: 100%; flex-wrap:wrap; justify-content: center;'>
+    {% for obj in list_objs %}
+    <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="{% firstof obj.image.url obj.products.first.image.url %}" alt="Card image cap" style=' max-height: 20rem;'>
+        <div class="card-body">
+        <h5 class="card-title">{% firstof obj.title obj.name %}</h5>
+            <p class="card-text" style="height: 5rem; overflow: hidden;">{{ obj.description | truncatewords:8 }}</p>
+            <a href="{{ obj.get_absolute_url }}" class="btn btn-primary">{% if obj.price %}see product{% else %}see category{% endif %}</a>
+        </div>
+      </div>
+    {% endfor %}
+
+    
+    {% if page_obj.has_next or page_obj.has_previous  %}
+            </div>
+            <div style="display: flex; justify-content: center; align-items: center; margin-top: 1.5rem; gap: 1rem;">
+                {%if page_obj.has_previous %} 
+                    <a class="badge badge-danger" style=" font-size: 1.3rem;" href="?page={{page_obj.previous_page_number}}">previuse</a> 
+            {% endif %}
+                <span class="badge badge-primary" style=" font-size: 1.3rem;">{{page_obj.number}}</span> 
+            
+            {%if page_obj.has_next %}
+                    <a  class="badge badge-danger" style=" font-size: 1.3rem;" href="?page={{page_obj.next_page_number}}">next</a> 
+            {% endif %}
+            </div>
+    {% endif %}
+
+    
+{% endblock  %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <form action="" method='post'>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="send">
+  </form>
+
+   <form action="{% url 'Account:send_code_again' %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="send code again!">
+   </form>
+
+{% endblock  %}

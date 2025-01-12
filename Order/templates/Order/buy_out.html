@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+ <a href="{% url "Home:home" %}">{{ home_message }}</a>
+{% endblock  %}

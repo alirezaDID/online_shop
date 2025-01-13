@@ -13,14 +13,14 @@ def send_code(email, code):
     fail_silently = True
 
     # send code without delay with threading
-    send_mail(
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        subject=subject,
-        message=message,
-        recipient_list=recipient_list,
-        fail_silently=fail_silently,
-        
-    )
+    mail_tread = threading.Thread(target=send_mail,kwargs={
+        'from_email':settings.DEFAULT_FROM_EMAIL,
+        'subject':subject,
+        'message':message,
+        'recipient_list':recipient_list, 
+        'fail_silently':fail_silently,
+    })
+    mail_tread.start()
 
 class PasswordValidation:
     def __init__(self, password1, password2):

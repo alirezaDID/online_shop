@@ -57,13 +57,13 @@ class LoginView(NoLoginRequireMixin, View):
         form = self.form_class(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            user = authenticate(email=cd['email'], password=cd['password'])
+            user = authenticate(request, email=cd['email'], password=cd['password']) 
             if user is not None:
                 login(request, user)
                 messages.add_message(request, messages.SUCCESS, 'you succifully logedin!')
                 return redirect("Home:home")
             else:
-                messages.add_message(request, messages.SUCCESS, "username or password isn't currect!")
+                messages.add_message(request, messages.SUCCESS, f"username or password isn't currect!")
         return render(request, self.template_name, {'form': form})
     
 

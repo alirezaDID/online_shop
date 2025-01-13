@@ -42,6 +42,12 @@ class RegisterForm(CustomUserCreationForm):
             model = CustomUser
             fields = ("email", "password1")
 
+        def clean(self):
+            cd = self.cleaned_data
+            if CustomUser.objects.filter(email=cd['email']).exists():
+                raise forms.ValidationError("user with this email already exists!")
+            return cd
+
 
 class OtpCodeForm(forms.Form):
     code = forms.IntegerField(max_value=9999)

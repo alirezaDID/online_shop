@@ -72,7 +72,7 @@ class Product(models.Model):
         return f"{self.title}"
     
     def save(self):
-        if self.title:
+        if (slugify(self.title) != self.slug or (not self.slug and self.title)):
             self.slug = slugify(self.title)
         return super().save()
     
